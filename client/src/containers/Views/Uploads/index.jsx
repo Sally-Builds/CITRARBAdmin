@@ -3,6 +3,7 @@ import "./index.css";
 import { Tab } from "@headlessui/react";
 import Music from "../../../components/Music";
 import EyeWitness from "../../../components/EyeWitness";
+import Market from "../../../components/Market";
 
 const index = () => {
   function classNames(...classes) {
@@ -19,7 +20,7 @@ const index = () => {
     },
     {
       header: "Market Place",
-      content: <h2>Market Place</h2>,
+      content: <Market />,
     },
   ];
   return (

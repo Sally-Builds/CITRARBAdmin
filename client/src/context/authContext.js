@@ -1,14 +1,11 @@
 import React, { createContext, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 export const AuthContext = createContext(null);
 
 export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
-
-  const navigate = useNavigate();
 
   const login = async (email, password) => {
     setLoading(true);
@@ -19,8 +16,10 @@ export const AuthContextProvider = ({ children }) => {
       });
       localStorage.setItem("token", result.data.token);
       setUser(result.data.user);
-      navigate("/dashboard");
+      window.location.replace("/dashboard");
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       console.log(error.response.data.message);
     }
   };
@@ -28,6 +27,7 @@ export const AuthContextProvider = ({ children }) => {
   const value = {
     user,
     loading,
+    setLoading,
     login,
   };
 

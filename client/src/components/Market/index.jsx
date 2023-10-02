@@ -1,6 +1,6 @@
 import React from "react";
-import AudioPlayer from "react-h5-audio-player";
-import "react-h5-audio-player/lib/styles.css";
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import { Carousel } from "react-responsive-carousel";
 
 const Index = () => {
   let data = [1, 2, 3, 5, 6, 7];
@@ -11,17 +11,31 @@ const Index = () => {
           {data.map((el, i) => (
             <div className="my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3">
               <article className="overflow-hidden rounded-lg shadow-lg">
-                <img
+                {/* <img
                   src="https://media.istockphoto.com/id/640318118/photo/sunset-over-indian-ocean.jpg?s=1024x1024&w=is&k=20&c=ZZ83CXrsxGd4HhoyV8KXgrdnoaQ9XgeAKkN_ru8taYk="
                   alt=""
-                />
+                /> */}
+                <Carousel showThumbs={false}>
+                  <div>
+                    <img
+                      alt=""
+                      src="https://media.istockphoto.com/id/640318118/photo/sunset-over-indian-ocean.jpg?s=1024x1024&w=is&k=20&c=ZZ83CXrsxGd4HhoyV8KXgrdnoaQ9XgeAKkN_ru8taYk="
+                    />
+                  </div>
+                  <div>
+                    <img alt="" src="assets/2.jpeg" />
+                  </div>
+                  <div>
+                    <img alt="" src="assets/3.jpeg" />
+                  </div>
+                </Carousel>
                 <header className="flex items-center justify-between leading-tight p-2 md:p-4">
                   <h1 className="text-lg">
                     <a
                       className="no-underline hover:underline text-black"
                       href="/"
                     >
-                      Article Title
+                      IPhone X
                     </a>
                   </h1>
                   <p className="text-grey-darker text-sm">11/1/19</p>
@@ -37,24 +51,9 @@ const Index = () => {
                       className="block rounded-full"
                       src="https://picsum.photos/32/32/?random"
                     />
-                    <p className="ml-2 text-sm">Author Name</p>
-                  </a>
-                  <a
-                    className="no-underline text-grey-darker hover:text-red-dark"
-                    href="/"
-                  >
-                    <span className="hidden">Like</span>
-                    <i class="fa-regular fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
+                    <p className="ml-2 text-sm">Sally Nwamama</p>
                   </a>
                 </footer>
-                <div>
-                  <AudioPlayer
-                    src="https://drive.google.com/uc?id=1enyL68tAW8a6OTOAGodn3e4vD6XUpu7o&export=download"
-                    onPlay={(e) => console.log("onPlay")}
-                    // other props here
-                  />
-                </div>
               </article>
             </div>
           ))}

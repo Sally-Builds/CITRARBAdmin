@@ -1,8 +1,8 @@
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import React from "react";
-import { AuthContextProvider } from "../context/authContext";
 import { UsersContextProvider } from "../context/usersContext";
 import { EventsContextProvider } from "../context/eventsContext";
+import { UploadsContextProvider } from "../context/uploadsContext";
 
 /**
  * import Layouts
@@ -19,26 +19,31 @@ import Uploads from "../containers/Views/Uploads";
 import Users from "../containers/Views/Users";
 
 const Router = () => {
+  // const { loading } = useContext(AuthContext);
   return (
-    <BrowserRouter>
-      <AuthContextProvider>
+    <>
+      <BrowserRouter>
         <Routes>
           <Route path="/" element={<AuthLayout />}>
             <Route path="" element={<Login />} />
           </Route>
-          <Route path="/dashboard" element={<MainLayout />}>
-            <Route element={<EventsContextProvider />}>
-              <Route path="events" element={<Events />} />
-            </Route>
-            <Route path="uploads" element={<Uploads />} />
-            <Route element={<UsersContextProvider />}>
-              <Route path="users" element={<Users />} />
-              <Route path="" element={<Dashboard />} />
+          <Route element={<UsersContextProvider />}>
+            <Route path="/dashboard" element={<MainLayout />}>
+              <Route element={<EventsContextProvider />}>
+                <Route path="events" element={<Events />} />
+              </Route>
+              <Route element={<UploadsContextProvider />}>
+                <Route path="uploads" element={<Uploads />} />
+              </Route>
+              <Route>
+                <Route path="users" element={<Users />} />
+                <Route path="" element={<Dashboard />} />
+              </Route>
             </Route>
           </Route>
         </Routes>
-      </AuthContextProvider>
-    </BrowserRouter>
+      </BrowserRouter>
+    </>
   );
 };
 

@@ -1,4 +1,4 @@
-import React, { useContext, useState, Fragment, useEffect } from "react";
+import React, { useContext, useState, Fragment } from "react";
 import "./index.css";
 import EventsContext from "../../../context/eventsContext";
 import { Dialog, Transition } from "@headlessui/react";
@@ -12,6 +12,7 @@ const Index = () => {
   let [isOpen, setIsOpen] = useState(false);
   let [date, setDate] = useState(new Date());
   let [name, setName] = useState("");
+  let [file, setFile] = useState(null);
   let [location, setLocation] = useState("");
   let [description, setDescription] = useState("");
 
@@ -23,17 +24,26 @@ const Index = () => {
     setIsOpen(true);
   }
 
+  function handleFileChange(event) {
+    setFile(event.target.files[0]);
+  }
+
   const submitForm = async (e) => {
     e.preventDefault();
     try {
-      const data = {
-        name,
-        time: date,
-        location,
-        description,
-        verified: true,
-      };
-      await createEvent(data);
+      var formData = new FormData();
+      formData.set("name", name);
+      formData.set("time", date);
+      formData.set("location", location);
+      formData.set("description", description);
+      formData.set("verified", true);
+      formData.append("image", file);
+      await createEvent(formData);
+      setName("");
+      setDate(new Date());
+      setLocation("");
+      setDescription("");
+      setFile(null);
       closeModal();
     } catch (error) {
       console.log(error);
@@ -94,7 +104,7 @@ const Index = () => {
                         className="w-10 m-4 h-10 rounded-full border-2 border-blueGray-50 shadow -ml-4"
                       />
                       <span className="absolute top-10 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">
-                        ✨ {data.host.username}
+                        {data.host && <>✨ {data.host.username}</>}
                       </span>
                     </div>
                     {/* co -hosts */}
@@ -207,6 +217,23 @@ const Index = () => {
                         onChange={(e) => setLocation(e.target.value)}
                       />
                     </div>
+
+                    <div>
+                      <label
+                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                        for="default_size"
+                      >
+                        Event cover
+                      </label>
+                      <input
+                        class="block w-full mb-5 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                        id="default_size"
+                        type="file"
+                        accept="image/*"
+                        onChange={handleFileChange}
+                      />
+                    </div>
+
                     <div>
                       <label
                         htmlFor="password"

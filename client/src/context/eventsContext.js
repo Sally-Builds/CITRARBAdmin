@@ -1,11 +1,13 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { Outlet } from "react-router-dom";
+import AuthContext from "./authContext";
 
 export const EventsContext = createContext(null);
 
 export const EventsContextProvider = ({ children }) => {
   const [events, setEvents] = useState([]);
+  const { setLoading } = useContext(AuthContext);
 
   useEffect(() => {
     getEvents();
@@ -13,6 +15,7 @@ export const EventsContextProvider = ({ children }) => {
 
   const getEvents = async () => {
     try {
+      setLoading(true);
       const token = localStorage.getItem("token") || "";
       const config = {
         headers: { Authorization: `Bearer ${token}` },
@@ -21,14 +24,18 @@ export const EventsContextProvider = ({ children }) => {
         "http://localhost:8000/api/events",
         config
       );
+      console.log(results);
       setEvents(results.data.data);
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       console.log(error.response.data.message);
     }
   };
 
   const createEvent = async (data) => {
     try {
+      setLoading(true);
       const token = localStorage.getItem("token") || "";
       const config = {
         headers: { Authorization: `Bearer ${token}` },
@@ -39,8 +46,11 @@ export const EventsContextProvider = ({ children }) => {
         config
       );
       console.log(result);
+      await getEvents();
     } catch (error) {
-      console.log(error.response);
+      setLoading(false);
+      console.log(error);
+      console.log(error.response.data.errors);
     }
   };
   const value = {

@@ -1,9 +1,11 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useContext } from "react";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
 import { Dialog, Transition } from "@headlessui/react";
+import UploadsContext from "../../context/uploadsContext";
 
 const Index = () => {
+  const { eyewitness } = useContext(UploadsContext);
   let [isOpen, setIsOpen] = useState(false);
 
   function closeModal() {
@@ -14,18 +16,24 @@ const Index = () => {
     setIsOpen(true);
   }
 
+  console.log(eyewitness, "here");
   return (
     <>
       <div className="container my-12 mx-auto px-4 md:px-12">
         <div className="flex flex-wrap -mx-1 lg:-mx-4">
           <div className="my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3">
             <article className="overflow-hidden rounded-lg shadow-lg">
-              <img
-                alt="Placeholder"
-                className="block h-auto w-full cursor-pointer"
-                src="https://picsum.photos/600/400/?random"
-                onClick={openModal}
-              />
+              <video width="320" height="240" controls>
+                <source
+                  src="https://www.youtube.com/watch?v=ohSMPDGm1ng&t=4126s"
+                  type="video/mp4"
+                />
+                <source
+                  src="https://www.youtube.com/watch?v=ohSMPDGm1ng&t=4126s"
+                  type="video/ogg"
+                />
+                Your browser does not support the video tag.
+              </video>
 
               <header className="flex items-center justify-between leading-tight p-2 md:p-4">
                 <h1 className="text-lg">
