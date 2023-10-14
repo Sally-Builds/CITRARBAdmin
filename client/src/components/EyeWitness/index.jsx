@@ -16,60 +16,66 @@ const Index = () => {
     setIsOpen(true);
   }
 
-  console.log(eyewitness, "here");
+  console.log("eye", eyewitness);
+
   return (
     <>
       <div className="container my-12 mx-auto px-4 md:px-12">
         <div className="flex flex-wrap -mx-1 lg:-mx-4">
-          <div className="my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3">
-            <article className="overflow-hidden rounded-lg shadow-lg">
-              <video width="320" height="240" controls>
-                <source
-                  src="https://www.youtube.com/watch?v=ohSMPDGm1ng&t=4126s"
-                  type="video/mp4"
-                />
-                <source
-                  src="https://www.youtube.com/watch?v=ohSMPDGm1ng&t=4126s"
-                  type="video/ogg"
-                />
-                Your browser does not support the video tag.
-              </video>
+          {eyewitness.length > 0 &&
+            eyewitness.map((el, i) => (
+              <div className="my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3">
+                <article className="overflow-hidden rounded-lg shadow-lg">
+                  <video width="320" height="240" controls>
+                    <source
+                      src="https://www.youtube.com/watch?v=ohSMPDGm1ng&t=4126s"
+                      type="video/mp4"
+                    />
+                    <source
+                      src="https://www.youtube.com/watch?v=ohSMPDGm1ng&t=4126s"
+                      type="video/ogg"
+                    />
+                    Your browser does not support the video tag.
+                  </video>
 
-              <header className="flex items-center justify-between leading-tight p-2 md:p-4">
-                <h1 className="text-lg">
-                  <a
-                    className="no-underline hover:underline text-black"
-                    href="#"
-                  >
-                    Article Title
-                  </a>
-                </h1>
-                <p className="text-grey-darker text-sm">11/1/19</p>
-              </header>
+                  <header className="flex items-center justify-between leading-tight p-2 md:p-4">
+                    <h1 className="text-lg">
+                      <a
+                        className="no-underline hover:underline text-black"
+                        href="/"
+                      >
+                        {el.title}
+                      </a>
+                    </h1>
+                    <p className="text-grey-darker text-sm">11/1/19</p>
+                  </header>
 
-              <footer className="flex items-center justify-between leading-none p-2 md:p-4">
-                <a
-                  className="flex items-center no-underline hover:underline text-black"
-                  href="#"
-                >
-                  <img
-                    alt="Placeholder"
-                    className="block rounded-full"
-                    src="https://picsum.photos/32/32/?random"
-                  />
-                  <p className="ml-2 text-sm">Author Name</p>
-                </a>
-                <a
-                  className="no-underline text-grey-darker hover:text-red-dark"
-                  href="#"
-                >
-                  <span className="hidden">Like</span>
-                  <i class="fa-regular fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                </a>
-              </footer>
-            </article>
-          </div>
+                  <footer className="flex items-center justify-between leading-none p-2 md:p-4">
+                    <a
+                      className="flex items-center no-underline hover:underline text-black"
+                      href="/"
+                    >
+                      <img
+                        alt="Placeholder"
+                        className="block rounded-full"
+                        src="https://picsum.photos/32/32/?random"
+                      />
+                      {el.userId && (
+                        <p className="ml-2 text-sm">{el.userId.username}e</p>
+                      )}
+                    </a>
+                    <a
+                      className="no-underline text-grey-darker hover:text-red-dark"
+                      href="/"
+                    >
+                      <span className="hidden">Like</span>
+                      <i class="fa-regular fa-star"></i>
+                      <i class="fa-solid fa-star"></i>
+                    </a>
+                  </footer>
+                </article>
+              </div>
+            ))}
         </div>
       </div>
 
