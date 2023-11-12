@@ -11,7 +11,12 @@ export const UsersContextProvider = ({ children }) => {
     labels: [],
     data: [],
   });
+  const [featAggregates, setFeatAggregates] = useState({
+    labels: [],
+    data: [],
+  });
   const [info, setInfo] = useState("");
+  const [recentEvents, setRecentEvents] = useState([]);
 
   const { setLoading } = useContext(AuthContext);
 
@@ -35,6 +40,11 @@ export const UsersContextProvider = ({ children }) => {
         .then((results) => {
           const data = results.data.aggregates;
           setUserAggregates({ data: data.y, label: data.x });
+          setFeatAggregates({
+            data: results.data.uploadsAggregates.data,
+            label: results.data.uploadsAggregates.label,
+          });
+          setRecentEvents(results.data.recentEvents);
         });
     } catch (error) {
       console.log(error);
@@ -88,7 +98,9 @@ export const UsersContextProvider = ({ children }) => {
     getUsers,
     userAgg,
     userAggregates,
+    featAggregates,
     userInfo,
+    recentEvents,
     info,
   };
   return (

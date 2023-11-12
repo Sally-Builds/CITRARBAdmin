@@ -16,30 +16,27 @@ const Index = () => {
     setIsOpen(true);
   }
 
-  console.log("eye", eyewitness);
-
   return (
     <>
       <div className="container my-12 mx-auto px-4 md:px-12">
         <div className="flex flex-wrap -mx-1 lg:-mx-4">
-          {eyewitness.length > 0 &&
+          {eyewitness ? (
             eyewitness.map((el, i) => (
-              <div className="my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3">
+              <div className="my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3 relative">
                 <article className="overflow-hidden rounded-lg shadow-lg">
-                  <video width="320" height="240" controls>
-                    <source
-                      src="https://www.youtube.com/watch?v=ohSMPDGm1ng&t=4126s"
+                  <div className="h-48 w-full flex items-center justify-center">
+                    <video
+                      className="object-contain max-h-full max-w-full"
+                      controls
+                      src={`${process.env.REACT_APP_BASE_URL}/${el.video}`}
                       type="video/mp4"
-                    />
-                    <source
-                      src="https://www.youtube.com/watch?v=ohSMPDGm1ng&t=4126s"
-                      type="video/ogg"
-                    />
-                    Your browser does not support the video tag.
-                  </video>
+                    >
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
 
-                  <header className="flex items-center justify-between leading-tight p-2 md:p-4">
-                    <h1 className="text-lg">
+                  <header className="leading-tight p-2 md:p-4">
+                    <h1 className="text-lg text-center">
                       <a
                         className="no-underline hover:underline text-black"
                         href="/"
@@ -47,7 +44,6 @@ const Index = () => {
                         {el.title}
                       </a>
                     </h1>
-                    <p className="text-grey-darker text-sm">11/1/19</p>
                   </header>
 
                   <footer className="flex items-center justify-between leading-none p-2 md:p-4">
@@ -61,21 +57,18 @@ const Index = () => {
                         src="https://picsum.photos/32/32/?random"
                       />
                       {el.userId && (
-                        <p className="ml-2 text-sm">{el.userId.username}e</p>
+                        <p className="ml-2 text-sm">{el.userId.username}</p>
                       )}
-                    </a>
-                    <a
-                      className="no-underline text-grey-darker hover:text-red-dark"
-                      href="/"
-                    >
-                      <span className="hidden">Like</span>
-                      <i class="fa-regular fa-star"></i>
-                      <i class="fa-solid fa-star"></i>
                     </a>
                   </footer>
                 </article>
               </div>
-            ))}
+            ))
+          ) : (
+            <div className="text-center text-xl font-bold">
+              No Eyewitness Reports
+            </div>
+          )}
         </div>
       </div>
 

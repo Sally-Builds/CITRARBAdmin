@@ -18,7 +18,7 @@ const Index = () => {
 
   const test = (e) => {
     setSelected(e);
-    if (e.name != "all") {
+    if (e.name !== "all") {
       userAgg(e.name);
     } else {
       userAgg();

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useNavigate } from "react";
 import Navbar from "../../components/Navbar";
 import Content from "../../components/Content";
 import { Outlet } from "react-router-dom";
@@ -8,6 +8,15 @@ import { CirclesWithBar } from "react-loader-spinner";
 
 const AuthLayout = ({ children }) => {
   const { loading } = useContext(AuthContext);
+  const token = localStorage.getItem("token"); // Replace "yourTokenKey" with your actual token key
+
+  useEffect(() => {
+    if (!token) {
+      // Token doesn't exist, redirect to login page
+      window.location.replace("/");
+    }
+  }, [token]);
+
   return (
     <LoadingOverlay
       active={loading}

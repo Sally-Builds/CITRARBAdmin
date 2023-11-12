@@ -3,6 +3,7 @@ import UploadsContext from "../../context/uploadsContext";
 
 const MusicForm = () => {
   const [title, setTitle] = useState("");
+  const [genre, setGenre] = useState("");
   const [file, setFile] = useState("");
   const [image, setImage] = useState("");
   const [description, setDescription] = useState("");
@@ -14,8 +15,10 @@ const MusicForm = () => {
     e.preventDefault();
     const data = {
       title,
+      genre,
       file,
       image,
+      description,
     };
 
     if (description !== "" && description.length < 25) {
@@ -32,7 +35,10 @@ const MusicForm = () => {
   return (
     <>
       <div>
-        <div> Add Music</div>
+        <div className="text-center font-semibold text-xl p-2">
+          <span>Add Music</span>
+        </div>
+        <hr className="pb-3" />
 
         <form onSubmit={submit}>
           <div class="mb-6">
@@ -48,6 +54,23 @@ const MusicForm = () => {
               onChange={(e) => setTitle(e.target.value)}
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="name@flowbite.com"
+              required
+            />
+          </div>
+
+          <div class="mb-6">
+            <label
+              for="email"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >
+              Genre*
+            </label>
+            <input
+              type="text"
+              value={genre}
+              onChange={(e) => setGenre(e.target.value)}
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="Afro-beats"
               required
             />
           </div>

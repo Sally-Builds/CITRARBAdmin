@@ -40,62 +40,66 @@ const Index = () => {
   return (
     <>
       <div className="block w-full overflow-x-auto ">
-        <table className="items-center w-full bg-transparent border-collapse">
-          <thead className="bg-neutral-600 text-white">
-            <tr>
-              <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left ">
-                SN
-              </th>
-              <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left ">
-                username
-              </th>
-              <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left ">
-                email
-              </th>
-              <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left ">
-                photo
-              </th>
-              <th className="px-6 align-middle border border-solid py-3 uppercase border-l-0 border-r-0 whitespace-nowrap text-left">
-                <i className="fa-solid fa-ellipsis-vertical"></i>
-              </th>
-            </tr>
-          </thead>
-
-          <tbody className="bg-neutral-100 text-neutral-500">
-            {users.map((user, i) => (
-              <tr key={i}>
-                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  {i + 1}
-                </td>
-                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  {user.username}
-                </td>
-                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  {user.email}
-                </td>
-                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  <div className="flex">
-                    <img
-                      src={`http://localhost:8000/images/${user.photo}`}
-                      alt="..."
-                      className="w-10 h-10 rounded-full border-2 border-blueGray-50 shadow -ml-4"
-                    />
-                  </div>
-                </td>
-                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  <i
-                    className="text-md cursor-pointer fa-solid fa-eye hover:text-blue-400"
-                    onClick={() => getUser(i)}
-                  ></i>
-                  <i
-                    className="fa-sharp fa-solid fa-trash text-md cursor-pointer p-2 hover:text-red-400"
-                    onClick={openDeleteModal}
-                  ></i>
-                </td>
+        {users.length > 0 ? (
+          <table className="items-center w-full bg-transparent border-collapse">
+            <thead className="bg-neutral-600 text-white">
+              <tr>
+                <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left ">
+                  SN
+                </th>
+                <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left ">
+                  username
+                </th>
+                <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left ">
+                  email
+                </th>
+                <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left ">
+                  photo
+                </th>
+                <th className="px-6 align-middle border border-solid py-3 uppercase border-l-0 border-r-0 whitespace-nowrap text-left">
+                  <i className="fa-solid fa-ellipsis-vertical"></i>
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+
+            <tbody className="bg-neutral-100 text-neutral-500">
+              {users.map((user, i) => (
+                <tr key={i}>
+                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                    {i + 1}
+                  </td>
+                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                    {user.username}
+                  </td>
+                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                    {user.email}
+                  </td>
+                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                    <div className="flex">
+                      <img
+                        src={`${process.env.REACT_APP_BASE_URL}/${user.photo}`}
+                        alt="..."
+                        className="w-10 h-10 rounded-full border-2 border-blueGray-50 shadow -ml-4"
+                      />
+                    </div>
+                  </td>
+                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                    <i
+                      className="text-md cursor-pointer fa-solid fa-eye hover:text-blue-400"
+                      onClick={() => getUser(i)}
+                    ></i>
+                    {/* <i
+                      className="fa-sharp fa-solid fa-trash text-md cursor-pointer p-2 hover:text-red-400"
+                      onClick={openDeleteModal}
+                    ></i> */}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <div className="text-center text-xl font-bold">No Users</div>
+        )}
       </div>
 
       <Transition appear show={isOpenDelete} as={Fragment}>
@@ -193,9 +197,8 @@ const Index = () => {
                           <div class="w-full px-4 flex justify-center">
                             <div class="relative">
                               <img
-                                alt="..."
-                                // src={users[index].photo}
-                                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAA+VBMVEVjhZYAAACui2EaQ8gWN6RpDEWMDVtZWVmtIWBGOCdmipsmMzkULHyzj2RbSTOmhV2WeFQLMKUZQcFfgZc0Rk9AVmEoBRqdGF6lIFwAQP9tDEdniZIXOakiIiIRERFff49LZXIMHVYTGRxyWz9Vc4FObZuEakohGhIXO7EiScU8MCIOI2ktTKEPPctFZ7AaAxFXeaEWNZpOcKkVMIssRYIdNX5aCjs3BiQAGGFNTU1dWkgRQvYAKqUADDAKF0EII3p5C05JBzBbETKVHFMUAg0vTZ8CN84NNrkQGjEMH1wTMJAjBBcFIXpoWUeHFVELGwYxGxsACB8ADxh3l7idAAADn0lEQVR4nO3ceVPaQBiAcUFtvRBE7QXFKhWpisXSu9rDo6292+//YdoO+26YbnybYI4FnudPJov7S5jJSkimpoiIiIiIiIiIiIiIiIiIiIiIiIiI/Gw1ufKmhFc7Wkmqo1remNBqKzNJtYIwnxAiRJh/4yusSUkKpbxxf+vum86nq0k1fS5v2s2b96dte+imk8sezO28eVMIESJEmEVjL6yNrbC7bTpoS+MlrO3LNw5JwvwSyiQQIkSIEOFkCmtR2q+bUhHKm6cj7L7vmOx1hA8d56XekunQ2fFq2g6pykb1gnQvFWHH7kl3WnamCBEiRIhwwoX2fBgyrRk5F4cJ6xGqakK7igiEC1KCwtVHUluuI9gvKto9afO1aXNP2oxSz77VntOFbHRhhYtrpvUkiXZl9kB2btseTTlyS8eF4dqTj/5hvHGLSQqtFCFChAgR+i2sz/glPJQeSx/dSdxQshtdfDL17EuflXFnGQntoXtSk0XUoiu8o3Tmbm57qox7lrlQ/k6ocPbSdKEyDiFChAgRjo6w/qbfl6WMhbMZCTsHG//e6hEmvKb0UDZqFssmO+6tMu5dVkLnl6zDC0vFfggRIkSIcEyEVbmAEQgXlP+AR1B4IAV3PaxLX5umZTvTm0qa8Jsy7iRVYXABw76yYadVKZla9qU5JU14qoxLWeg2IDQTRYgQIUKECKMIGzv9vs/durS5H2ajxoBQxp0q4062TPkJiyVbQSnYrOgMnFfGpfJrk5jCYMaasOxsHoxThRnBECJEiBBhOkLnBDe0cNdP4e58v127SClWlC4Hho7zQWhbLmmzH64SQoQIESKccGHJyS+h3P6wtjWksNJyctc7OQpDrj3FE5aa7qdAW+JmL7RShAgRIkSIEOHQwpBFm1+rtqsLo+0GhAgRIkQ4ScKQs1+kAuFClPITlptRWnazQvvUCLU0iNGEFbl+o9YoXLGG78Kdqwq3ECJEiBDhKAvL9hS+q3Q3VjvPpdceCINVm3acXlyP08tXt01HPgitFCFChAgRIvy/UAGOh9A+KiKk4nwjVsfST6+E2vHVfiMcKYQIESJEOAFC7X6LSOX4nXc0Yct9AMV6vDwXBl91BLcUR7ri5MO1p5jSAWEac0aIECFChJ4KlX/tQ2r9Mo+IGB1hcC9opNayfkSEVkrCvFkDIUSIMP8QIhw/4f0obeStGiyu0KvJRwohQv9DiND/ECL0P4QI/Q8hQv9D6I/wN9Q/6OypFD33AAAAAElFTkSuQmCC"
+                                alt="user profile"
+                                src={`${process.env.REACT_APP_BASE_URL}/${users[index].photo}`}
                                 class="shadow-xl rounded-full h-auto align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px"
                               />
                             </div>
@@ -256,14 +259,6 @@ const Index = () => {
                           <div class="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold">
                             <i class="fa-regular fa-envelope mr-2 text-lg text-blueGray-400"></i>
                             {users[index].email}
-                          </div>
-                          <div class="mb-2 text-blueGray-600 mt-10">
-                            <i class="fas fa-briefcase mr-2 text-lg text-blueGray-400"></i>
-                            Solution Manager - Creative Tim Officer
-                          </div>
-                          <div class="mb-2 text-blueGray-600">
-                            <i class="fas fa-university mr-2 text-lg text-blueGray-400"></i>
-                            University of Computer Science
                           </div>
                         </div>
 

@@ -1,7 +1,8 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
-import axios from "axios";
+import api from "../api/axiosInstance";
 import { Outlet } from "react-router-dom";
 import AuthContext from "./authContext";
+import { toast } from "react-toastify";
 
 export const UploadsContext = createContext(null);
 
@@ -19,19 +20,9 @@ export const UploadsContextProvider = ({ children }) => {
   const getEyeWitness = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem("token") || "";
-      const config = {
-        headers: { Authorization: `Bearer ${token}` },
-      };
-      const eye_witness = await axios.get(
-        "http://localhost:8000/api/eye_witness",
-        config
-      );
-      const music = await axios.get("http://localhost:8000/api/music", config);
-      const market = await axios.get(
-        "http://localhost:8000/api/products",
-        config
-      );
+      const eye_witness = await getAllEyeWitness();
+      const music = await getAllMusic();
+      const market = await getAllMarket();
       setEyeWitness(eye_witness.data.data);
       setMusic(music.data.data);
       setMarket(market.data.data);
@@ -42,7 +33,18 @@ export const UploadsContextProvider = ({ children }) => {
     }
   };
 
-  //get music
+  //get all music
+  const getAllMusic = async () => {
+    return await api.get("/music");
+  };
+
+  const getAllEyeWitness = async () => {
+    return await api.get("/eye_witness");
+  };
+
+  const getAllMarket = async () => {
+    return await api.get("/products");
+  };
 
   //get market products
   const createMarketProduct = async ({
@@ -65,22 +67,48 @@ export const UploadsContextProvider = ({ children }) => {
 
     try {
       setLoading(true);
-      const token = localStorage.getItem("token") || "";
 
-      const market = await axios({
+      await api({
         method: "post",
-        url: "http://localhost:8000/api/products",
+        url: "/products",
         data: formData,
-        headers: {
-          Authorization: `Bearer ${token}`,
-          // "Content-Type": "multipart/form-data",
-        },
       });
-      setLoading(false);
-      console.log(market);
+      toast.success("Successful", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      window.location.reload();
     } catch (error) {
       setLoading(false);
-      console.log(error);
+      if (error.response && error.response.data && error.response.data.errors) {
+        toast.error(error.response.data.errors[0], {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      } else {
+        toast.error("Something went wrong. Try agian", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
     }
   };
 
@@ -99,22 +127,47 @@ export const UploadsContextProvider = ({ children }) => {
     }
     try {
       setLoading(true);
-      const token = localStorage.getItem("token") || "";
-
-      const eye_witness = await axios({
+      await api({
         method: "post",
-        url: "http://localhost:8000/api/eye_witness",
+        url: "/eye_witness",
         data: formData,
-        headers: {
-          Authorization: `Bearer ${token}`,
-          // "Content-Type": "multipart/form-data",
-        },
       });
-      setLoading(false);
-      console.log(eye_witness);
+      toast.success("Successful", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      window.location.reload();
     } catch (error) {
       setLoading(false);
-      console.log(error);
+      if (error.response && error.response.data && error.response.data.errors) {
+        toast.error(error.response.data.errors[0], {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      } else {
+        toast.error("Something went wrong. Try agian", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
     }
   };
 
@@ -122,6 +175,7 @@ export const UploadsContextProvider = ({ children }) => {
   const createMusic = async (data) => {
     const formData = new FormData();
     formData.append("title", data.title);
+    formData.append("genre", data.genre);
     formData.append("file", data.file);
 
     if (data.image) {
@@ -133,22 +187,48 @@ export const UploadsContextProvider = ({ children }) => {
     }
     try {
       setLoading(true);
-      const token = localStorage.getItem("token") || "";
 
-      const music = await axios({
+      await api({
         method: "post",
-        url: "http://localhost:8000/api/music",
+        url: "/music",
         data: formData,
-        headers: {
-          Authorization: `Bearer ${token}`,
-          // "Content-Type": "multipart/form-data",
-        },
       });
-      setLoading(false);
-      console.log(music);
+      toast.success("Successful", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      window.location.reload();
     } catch (error) {
       setLoading(false);
-      console.log(error);
+      if (error.response && error.response.data && error.response.data.errors) {
+        toast.error(error.response.data.errors[0], {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      } else {
+        toast.error("Something went wrong. Try agian", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
     }
   };
 
@@ -157,27 +237,6 @@ export const UploadsContextProvider = ({ children }) => {
   //delete music
 
   //delete market
-
-  //   const createEvent = async (data) => {
-  //     try {
-  //       setLoading(true);
-  //       const token = localStorage.getItem("token") || "";
-  //       const config = {
-  //         headers: { Authorization: `Bearer ${token}` },
-  //       };
-  //       const result = await axios.post(
-  //         "http://localhost:8000/api/events",
-  //         data,
-  //         config
-  //       );
-  //       console.log(result);
-  //       await getEvents();
-  //     } catch (error) {
-  //       setLoading(false);
-  //       console.log(error);
-  //       console.log(error.response.data.errors);
-  //     }
-  //   };
   const value = {
     eyewitness,
     music,

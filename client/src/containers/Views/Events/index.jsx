@@ -15,6 +15,7 @@ const Index = () => {
   let [file, setFile] = useState(null);
   let [location, setLocation] = useState("");
   let [description, setDescription] = useState("");
+  let [descriptionError, setDescriptionError] = useState("");
 
   function closeModal() {
     setIsOpen(false);
@@ -30,6 +31,10 @@ const Index = () => {
 
   const submitForm = async (e) => {
     e.preventDefault();
+    if (description.length < 25) {
+      setDescriptionError("description must be not less than 25 characters");
+      return;
+    }
     try {
       var formData = new FormData();
       formData.set("name", name);
@@ -43,6 +48,7 @@ const Index = () => {
       setDate(new Date());
       setLocation("");
       setDescription("");
+      setDescriptionError("");
       setFile(null);
       closeModal();
     } catch (error) {
@@ -52,84 +58,65 @@ const Index = () => {
   return (
     <>
       <div className="block w-full overflow-x-auto ">
-        <table className="items-center w-full bg-transparent border-collapse">
-          <thead className="bg-neutral-600 text-white">
-            <tr>
-              <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                SN
-              </th>
-              <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                Event Name
-              </th>
-              <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                location
-              </th>
-              <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                Date
-              </th>
-              <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                Organizer(s)
-              </th>
-              <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                Attendees
-              </th>
-              <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                Rating
-              </th>
-            </tr>
-          </thead>
-
-          <tbody className="bg-neutral-100 text-neutral-500">
-            {events.map((data, i) => (
-              <tr key={i} className={"hover:bg-gray-50 cursor-pointer"}>
-                <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  {i + 1}
+        {events ? (
+          <table className="items-center w-full bg-transparent border-collapse">
+            <thead className="bg-neutral-600 text-white">
+              <tr>
+                <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                  SN
                 </th>
-                <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  {data.name}
+                <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                  Event Name
                 </th>
-                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  {data.location}
-                </td>
-                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  <i className="fas fa-circle text-orange-500 mr-2"></i>
-                  {data.time}
-                </td>
-                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  <div className="flex">
-                    <div className="group relative flex justify-center">
-                      <img
-                        src="https://demos.creative-tim.com/notus-js/assets/img/team-4-470x470.png"
-                        alt="..."
-                        className="w-10 m-4 h-10 rounded-full border-2 border-blueGray-50 shadow -ml-4"
-                      />
-                      <span className="absolute top-10 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">
-                        {data.host && <>✨ {data.host.username}</>}
-                      </span>
-                    </div>
-                    {/* co -hosts */}
-                    {/* <div className="group relative flex justify-center">
-                      <img
-                        src="https://demos.creative-tim.com/notus-js/assets/img/team-4-470x470.png"
-                        alt="..."
-                        className="w-10 m-4 h-10 rounded-full border-2 border-blueGray-50 shadow -ml-4"
-                      />
-                      <span className="absolute top-10 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">
-                        ✨ You hover me!
-                      </span>
-                    </div> */}
-                  </div>
-                </td>
-                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  {data.numberOfAttendee}
-                </td>
-                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  <i className="fas fa-circle text-orange-500 mr-2"></i>4.5
-                </td>
+                <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                  location
+                </th>
+                <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                  Date
+                </th>
+                <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                  Organizer(s)
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+
+            <tbody className="bg-neutral-100 text-neutral-500">
+              {events.map((data, i) => (
+                <tr key={i} className={"hover:bg-gray-50 cursor-pointer"}>
+                  <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                    {i + 1}
+                  </th>
+                  <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                    {data.name}
+                  </th>
+                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                    {data.location}
+                  </td>
+                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                    <i className="fas fa-circle text-orange-500 mr-2"></i>
+                    {new Date(data.time).toDateString()}
+                  </td>
+                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                    <div className="flex">
+                      <div className="group relative flex justify-center">
+                        <img
+                          src="https://demos.creative-tim.com/notus-js/assets/img/team-4-470x470.png"
+                          alt="..."
+                          className="w-10 m-4 h-10 rounded-full border-2 border-blueGray-50 shadow -ml-4"
+                        />
+                        <span className="absolute top-10 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">
+                          {data.host && <>✨ {data.host.username}</>}
+                        </span>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <div className="text-center text-xl font-bold">No Events</div>
+        )}
       </div>
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={closeModal}>
@@ -178,8 +165,8 @@ const Index = () => {
                       </label>
                       <input
                         type="text"
-                        name="email"
-                        id="email"
+                        name="name"
+                        required
                         className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="Bon fire"
                         value={name}
@@ -211,6 +198,7 @@ const Index = () => {
                       <input
                         type="text"
                         name="venue"
+                        required
                         className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="oakland hotels"
                         value={location}
@@ -244,12 +232,17 @@ const Index = () => {
                       <textarea
                         type="text"
                         name="password"
+                        required
                         rows={4}
+                        minLength={25}
                         placeholder="about event"
                         className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                       />
+                      <span className="text-red-500 text-xs">
+                        {descriptionError}
+                      </span>
                     </div>
                     <button
                       type="submit"
@@ -265,13 +258,15 @@ const Index = () => {
         </Dialog>
       </Transition>
 
-      <button
-        title="Create Event"
-        className="fixed z-90 bottom-10 right-8 bg-blue-600 w-20 h-20 rounded-full drop-shadow-lg flex justify-center items-center text-white text-4xl hover:bg-blue-700 hover:drop-shadow-2xl hover:animate-bounce duration-300"
-        onClick={openModal}
-      >
-        <i className="fa-sharp fa-solid fa-plus m-2"></i>
-      </button>
+      <div>
+        <button
+          title="Create Event"
+          className="fixed bottom-10 right-8 bg-blue-600 w-20 h-20 rounded-full drop-shadow-lg flex justify-center items-center text-white text-4xl hover:bg-teal-400 hover:drop-shadow-2xl"
+          onClick={openModal}
+        >
+          <i className="fa-sharp fa-solid fa-plus m-2"></i>
+        </button>
+      </div>
     </>
   );
 };

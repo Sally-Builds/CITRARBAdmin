@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import Logo from "../../assets/logo.png";
+import AuthContext from "../../context/authContext";
 
-const index = () => {
+const Index = () => {
+  const { logout } = useContext(AuthContext);
+
   const Links = [
     {
       name: "Dashboard",
@@ -17,7 +21,11 @@ const index = () => {
     },
     {
       name: "Uploads",
-      link: "/dashboard/uploads",
+      link: "/dashboard/uploads/eyewitness",
+    },
+    {
+      name: "Contest",
+      link: "/dashboard/hookup/male",
     },
   ];
   return (
@@ -66,8 +74,8 @@ const index = () => {
                 href="/"
               >
                 <img
-                  src="https://tecdn.b-cdn.net/img/logo/te-transparent-noshadows.webp"
-                  style={{ height: "15px" }}
+                  src={Logo}
+                  style={{ height: "25px" }}
                   alt=""
                   loading="lazy"
                 />
@@ -90,12 +98,12 @@ const index = () => {
             </div>
 
             <div class="relative flex items-center">
-              <a
+              <button
                 class="mr-4 text-neutral-500 hover:text-neutral-700 focus:text-neutral-700 disabled:text-black/30 dark:text-neutral-200 dark:hover:text-neutral-300 dark:focus:text-neutral-300 [&.active]:text-black/90 dark:[&.active]:text-neutral-400"
-                href="/"
+                onClick={logout}
               >
                 Logout
-              </a>
+              </button>
             </div>
           </div>
         </nav>
@@ -104,4 +112,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default Index;

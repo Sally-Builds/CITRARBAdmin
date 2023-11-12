@@ -6,11 +6,19 @@ const EyeWitnessForm = () => {
   const [location, setLocation] = useState("");
   const [video, setVideo] = useState("");
   const [description, setDescription] = useState("");
+  const [descriptionError, setDescriptionError] = useState("");
 
   const { createEyeWitness } = useContext(UploadsContext);
 
   const submit = async (e) => {
     e.preventDefault();
+
+    if (description !== "" && description.length < 25) {
+      setDescriptionError(
+        "Description too short. must be greater that 25 characters"
+      );
+      return;
+    }
 
     const data = {
       title,
@@ -24,7 +32,10 @@ const EyeWitnessForm = () => {
   return (
     <>
       <div>
-        <div> Add Eye Witness</div>
+        <div className="text-center font-semibold text-xl p-2">
+          <span>Add EyeWitness</span>
+        </div>
+        <hr className="pb-3" />
 
         <form onSubmit={submit}>
           <div class="mb-6">
@@ -87,10 +98,12 @@ const EyeWitnessForm = () => {
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
+              required
               rows="4"
               class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="what is happening..."
             ></textarea>
+            <span className="text-red-400 text-xs">{descriptionError}</span>
           </div>
           <button
             type="submit"

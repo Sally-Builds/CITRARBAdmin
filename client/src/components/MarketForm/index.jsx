@@ -21,6 +21,10 @@ const MarketForm = () => {
     if (!values.description) {
       errors.description = "Description is required";
     }
+    if (values.description !== "" && values.description.length < 25) {
+      errors.description =
+        "Description too short. must be greater that 25 characters";
+    }
     if (values.images && values.images.length > 3) {
       errors.images = "Maximum of three images allowed";
     }
@@ -43,7 +47,11 @@ const MarketForm = () => {
 
   return (
     <div>
-      <div>Add Product</div>
+      <div className="text-center font-semibold text-xl p-2">
+        <span>Add Market</span>
+      </div>
+      <hr className="pb-3" />
+
       <Formik
         initialValues={{
           name: "",
@@ -53,8 +61,6 @@ const MarketForm = () => {
           description: "",
         }}
         onSubmit={async (values) => {
-          // await new Promise((r) => setTimeout(r, 500));
-          // alert(JSON.stringify(values, null, 2));
           await createMarketProduct(values);
         }}
         validate={validate}
@@ -113,7 +119,7 @@ const MarketForm = () => {
                 htmlFor="price"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
-                Price
+                Price (&#8358;)
               </label>
               <Field
                 type="number"
@@ -167,7 +173,9 @@ const MarketForm = () => {
               />
               <ErrorMessage
                 name="description"
-                render={(msg) => <div className="text-red-400">{msg}</div>}
+                render={(msg) => (
+                  <div className="text-red-400 text-sm">{msg}</div>
+                )}
               />
             </div>
 

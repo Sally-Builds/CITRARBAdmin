@@ -1,41 +1,47 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, useContext, useEffect, Fragment } from "react";
 import "./index.css";
 import { Tab, Dialog, Transition } from "@headlessui/react";
-import Music from "../../../components/Music";
-import EyeWitness from "../../../components/EyeWitness";
-import Market from "../../../components/Market";
-import EyeWitnessForm from "../../../components/EyeWitnessForm";
-import MusicForm from "../../../components/MusicForm";
-import MarketForm from "../../../components/MarketForm";
+import EventsContext from "../../../context/eventsContext";
+import HookupTable from "../../../components/HookupTable";
 import { useParams, useNavigate } from "react-router-dom";
+import HookupForm from "../../../components/HookupForm";
 
 const Index = () => {
+  const { getHookups, hookups } = useContext(EventsContext);
+
+  useEffect(() => {
+    getHookups();
+  }, []);
+
   let [isOpenView, setIsOpenView] = useState(false);
-  let [formView, setFormView] = useState("");
+  const { gender } = useParams();
+
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
   }
-
   const history = useNavigate();
-  const { type } = useParams();
+
+  console.log("gender", gender);
   const data = [
     {
-      header: "Eye-witness",
-      param: "eyewitness",
-      content: <EyeWitness />,
-      form: <EyeWitnessForm />,
+      header: "MCM (Male)",
+      content:
+        hookups.length > 0 ? (
+          <HookupTable data={hookups.filter((el) => el.gender === gender)} />
+        ) : (
+          <HookupTable data={hookups} />
+        ),
+      gender: "male",
     },
     {
-      header: "Market Place",
-      param: "market",
-      content: <Market />,
-      form: <MarketForm />,
-    },
-    {
-      header: "Music",
-      param: "music",
-      content: <Music />,
-      form: <MusicForm />,
+      header: "WCW (Female)",
+      content:
+        hookups.length > 0 ? (
+          <HookupTable data={hookups.filter((el) => el.gender === gender)} />
+        ) : (
+          <HookupTable data={hookups} />
+        ),
+      gender: "female",
     },
   ];
 
@@ -44,16 +50,15 @@ const Index = () => {
   }
 
   function openViewModal(index) {
-    setFormView(data[index].form);
     setIsOpenView(true);
   }
 
   function onTabChange(index) {
-    history(`/dashboard/uploads/${data[index].param}`);
+    history(`/dashboard/hookup/${data[index].gender}`);
   }
 
   function getDefaultTab() {
-    const val = data.findIndex((el) => el.param === type);
+    const val = data.findIndex((el) => el.gender === gender);
 
     return val < 0 ? 0 : val;
   }
@@ -86,49 +91,14 @@ const Index = () => {
         </Tab.Panels>
       </Tab.Group>
 
-      <div class="group fixed bottom-10 right-10 z-10 flex h-14 w-14 items-center justify-center rounded-full bg-danger-600 uppercase leading-normal text-white">
+      <div>
         <button
-          data-te-ripple-init
-          data-te-ripple-color="light"
-          className="hover:scale-110  mt-3 cursor-pointer rounded-full p-5 text-white bg-cyan-500"
+          onClick={openViewModal}
+          title="Create Contest"
+          className="fixed bottom-10 right-8 bg-blue-600 w-20 h-20 rounded-full drop-shadow-lg flex justify-center items-center text-white text-4xl hover:bg-teal-400 hover:drop-shadow-2xl"
         >
           <i className="fa-sharp fa-solid fa-plus m-2"></i>
         </button>
-        <ul class="absolute z-0 flex translate-y-full flex-col items-center justify-center opacity-0 transition-all duration-500 ease-in-out group-hover:-translate-y-[60%] group-hover:opacity-100">
-          <li>
-            <div
-              data-te-ripple-init
-              data-te-ripple-color="light"
-              data-te-ripple-centered="true"
-              onClick={() => openViewModal(0)}
-              className="hover:scale-110 mx-5 mb-5 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-cyan-600 shadow-md hover:shadow-lg"
-            >
-              <i class="fa-solid fa-eye"></i>
-            </div>
-          </li>
-          <li>
-            <div
-              data-te-ripple-init
-              data-te-ripple-color="light"
-              data-te-ripple-centered="true"
-              className="hover:scale-110 mx-5 mb-5 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-cyan-600 shadow-md hover:shadow-lg"
-              onClick={() => openViewModal(1)}
-            >
-              <i class="fa-solid fa-cart-shopping"></i>
-            </div>
-          </li>
-          <li>
-            <div
-              data-te-ripple-init
-              data-te-ripple-color="light"
-              data-te-ripple-centered="true"
-              className="hover:scale-110 mx-5 mb-5 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-cyan-600 shadow-md hover:shadow-lg"
-              onClick={() => openViewModal(2)}
-            >
-              <i class="fa-solid fa-music"></i>
-            </div>
-          </li>
-        </ul>
       </div>
 
       <Transition appear show={isOpenView} as={Fragment}>
@@ -157,8 +127,7 @@ const Index = () => {
                 leaveTo="opacity-0 scale-95"
               >
                 <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                  {/* <EyeWitnessForm /> */}
-                  {formView}
+                  <HookupForm />
                 </Dialog.Panel>
               </Transition.Child>
             </div>
