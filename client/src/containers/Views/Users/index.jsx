@@ -13,9 +13,9 @@ const Index = () => {
     setIsOpenDelete(false);
   }
 
-  function openDeleteModal() {
-    setIsOpenDelete(true);
-  }
+  // function openDeleteModal() {
+  //   setIsOpenDelete(true);
+  // }
 
   function closeViewModal() {
     setIsOpenView(false);

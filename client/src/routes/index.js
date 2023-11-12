@@ -1,5 +1,5 @@
 import { Route, Routes, BrowserRouter } from "react-router-dom";
-import React, { useEffect, useNavigate } from "react";
+import React from "react";
 import { UsersContextProvider } from "../context/usersContext";
 import { EventsContextProvider } from "../context/eventsContext";
 import { UploadsContextProvider } from "../context/uploadsContext";
@@ -18,20 +18,6 @@ import Events from "../containers/Views/Events";
 import Uploads from "../containers/Views/Uploads";
 import Users from "../containers/Views/Users";
 import Hookup from "../containers/Views/Hookup";
-
-const PrivateRoute = ({ element }) => {
-  const token = localStorage.getItem("token"); // Replace "yourTokenKey" with your actual token key
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!token) {
-      // Token doesn't exist, redirect to login page
-      navigate("/login");
-    }
-  }, [token, navigate]);
-
-  return token ? element : null;
-};
 
 const Router = () => {
   return (
