@@ -1,3 +1,0 @@
-[build]
-publish = "client"
-command = "yarn install && npm run build"
