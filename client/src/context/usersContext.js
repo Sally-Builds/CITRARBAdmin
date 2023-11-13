@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
-import axios from "axios";
 import { Outlet } from "react-router-dom";
 import AuthContext from "./authContext";
+import api from "../api/axiosInstance";
 
 export const UsersContext = createContext(null);
 
@@ -27,25 +27,19 @@ export const UsersContextProvider = ({ children }) => {
 
   const userAgg = async (year = "") => {
     try {
-      const token = localStorage.getItem("token") || "";
-      const config = {
-        headers: { Authorization: `Bearer ${token}` },
-      };
       let query = "/";
       if (year) {
         query = `?year=${year}`;
       }
-      await axios
-        .get(`http://localhost:8000/api/users/admin${query}`, config)
-        .then((results) => {
-          const data = results.data.aggregates;
-          setUserAggregates({ data: data.y, label: data.x });
-          setFeatAggregates({
-            data: results.data.uploadsAggregates.data,
-            label: results.data.uploadsAggregates.label,
-          });
-          setRecentEvents(results.data.recentEvents);
+      await api.get(`/users/admin${query}`).then((results) => {
+        const data = results.data.aggregates;
+        setUserAggregates({ data: data.y, label: data.x });
+        setFeatAggregates({
+          data: results.data.uploadsAggregates.data,
+          label: results.data.uploadsAggregates.label,
         });
+        setRecentEvents(results.data.recentEvents);
+      });
     } catch (error) {
       console.log(error);
       console.log(error.response.data.message);
@@ -55,14 +49,7 @@ export const UsersContextProvider = ({ children }) => {
   const getUsers = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem("token") || "";
-      const config = {
-        headers: { Authorization: `Bearer ${token}` },
-      };
-      const results = await axios.get(
-        "http://localhost:8000/api/users",
-        config
-      );
+      const results = await api.get("/users");
       console.log(results);
       setUsers(results.data.members);
       setLoading(false);
@@ -75,17 +62,11 @@ export const UsersContextProvider = ({ children }) => {
   const userInfo = async (userId) => {
     try {
       setLoading(true);
-      const token = localStorage.getItem("token") || "";
-      const config = {
-        headers: { Authorization: `Bearer ${token}` },
-      };
-      await axios
-        .get(`http://localhost:8000/api/users/aggregate/${userId}`, config)
-        .then((res) => {
-          console.log(res);
-          setInfo(res.data.aggregates);
-          setLoading(false);
-        });
+      await api.get(`/users/aggregate/${userId}`).then((res) => {
+        console.log(res);
+        setInfo(res.data.aggregates);
+        setLoading(false);
+      });
     } catch (error) {
       console.log(error);
       setLoading(false);
